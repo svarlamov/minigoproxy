@@ -17,13 +17,13 @@ func proxyConn(conn *net.TCPConn) {
 	rAddr, err := net.ResolveTCPAddr("tcp", *remoteAddr)
 	if err != nil {
 		log.Println(err)
-    return
+    		return
 	}
 
 	rConn, err := net.DialTCP("tcp", nil, rAddr)
 	if err != nil {
 		log.Println(err)
-    return
+    		return
 	}
 	defer rConn.Close()
 
@@ -33,7 +33,7 @@ func proxyConn(conn *net.TCPConn) {
 		n, err := conn.Read(data)
 		if err != nil {
 			log.Println(err)
-      return
+      			return
 		}
 		buf.Write(data[:n])
 		if data[0] == 13 && data[1] == 10 {
@@ -43,7 +43,7 @@ func proxyConn(conn *net.TCPConn) {
 
 	if _, err := rConn.Write(buf.Bytes()); err != nil {
 		log.Println(err)
-    return
+    		return
 	}
 	log.Printf("sent:\n%v", hex.Dump(buf.Bytes()))
 
@@ -52,7 +52,7 @@ func proxyConn(conn *net.TCPConn) {
 	if err != nil {
 		if err != io.EOF {
 			log.Println(err)
-      return
+      			return
 		} else {
 			log.Printf("received err: %v", err)
 		}
